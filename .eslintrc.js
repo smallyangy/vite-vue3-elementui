@@ -33,7 +33,6 @@ module.exports = {
         'import/extensions': 'off',
         'eol-last': 'off',
         'no-shadow': 'off',
-        'no-unused-vars': 'warn',
         'import/no-cycle': 'off',
         'arrow-parens': 'off',
         semi: [2, 'always'],
@@ -89,7 +88,8 @@ module.exports = {
         }],
         'vue/singleline-html-element-content-newline': 'off',
         'vue/multi-word-component-names': 'off',
-        '@typescript-eslint/no-unused-vars': ['on', { argsIgnorePattern: '^_', varsIgnorePattern: '^ignored?$' }],
+        'no-unused-vars': 'off',
+        // '@typescript-eslint/no-unused-vars': ['error'],
     },
     overrides: [
         {

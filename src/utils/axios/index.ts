@@ -1,44 +1,49 @@
-import axios from 'axios';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import type { RequestConfig, RequestInterceptors } from './types';
+import Request from './request';
+import config from '../../../config';
 
-class Request {
-    // axios实例
-    instance: AxiosInstance;
-    // 拦截器对象
-    interceptorsObj?: RequestInterceptors
+import type { RequestConfig } from './types';
 
-    constructor(config: RequestConfig) {
-        this.instance = axios.create(config);
-        this.interceptorsObj = config.interceptors;
+const request = new Request({
+    baseURL: config[(import.meta.env.MODE as 'development' | 'staging' | 'release' | 'production')].baseUrl,
+    timeout: 1000 * 60 * 5,
+    interceptors: {
+        requestInterceptors: config => config,
+        responseInterceptors: config => config,
+    },
+});
 
-        // 请求拦截器
-        this.instance.interceptors.request.use((res: AxiosRequestConfig) => {
-            console.log('全局请求拦截器');
-            return res;
-        }, (err: any) => err);
-
-        // 使用实例拦截器
-        this.instance.interceptors.request.use(
-            this.interceptorsObj?.requestInterceptors,
-            this.interceptorsObj?.requestInterceptorsCatch,
-        )
-        this.instance.interceptors.response.use(
-            this.interceptorsObj?.responseInterceptors,
-            this.interceptorsObj?.responseInterceptorsCatch,
-        )
-
-        // 返回拦截器
-        this.instance.interceptors.response.use((res: AxiosResponse) => {
-            console.log('全局响应拦截器');
-            // 因为我们接口的数据都在res.data下，所以我们直接返回res.data
-            return res.data;
-        }, (err: any) => err);
-    }
-
-    request(config: AxiosRequestConfig) {
-        return this.instance.request(config);
-    }
+interface APIRequestConfig<T> extends RequestConfig {
+    data?: T
 }
 
-export default Request;
+interface APIResponse<T> {
+    code: number;
+    message: string;
+    data: T
+}
+
+const apiRequest = <D, T = any>(config: APIRequestConfig<D>) => {
+    const { method = 'GET' } = config;
+    if (method.toUpperCase() === 'GET') {
+        config.params = config.data;
+    }
+    return request.request<APIResponse<T>>(config);
+};
+
+const get = <RES>(url: string, data: any) => apiRequest<any, RES>({
+    url,
+    data,
+    method: 'GET',
+});
+const post = <RES>(url: string, data: any) => apiRequest<any, RES>({
+    url,
+    data,
+    method: 'POST',
+});
+
+const http = {
+    get,
+    post,
+};
+
+export default http;
