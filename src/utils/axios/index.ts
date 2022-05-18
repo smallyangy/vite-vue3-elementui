@@ -30,12 +30,12 @@ const apiRequest = <D, T = any>(config: APIRequestConfig<D>) => {
     return request.request<APIResponse<T>>(config);
 };
 
-const get = <RES>(url: string, data: any) => apiRequest<any, RES>({
+const get = <RES>(url: string, data?: any) => apiRequest<any, RES>({
     url,
     data,
     method: 'GET',
 });
-const post = <RES>(url: string, data: any) => apiRequest<any, RES>({
+const post = <RES>(url: string, data?: any) => apiRequest<any, RES>({
     url,
     data,
     method: 'POST',
