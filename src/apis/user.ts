@@ -1,20 +1,9 @@
 import http from '@/utils/axios/index';
+import type { RESgetUserInfo, REQpostAny, RESpostAny } from './user.d';
 
-type RES_getUserInfo = {
-    name: string;
-    age: number;
-}
-const getUserInfo = () => http.get<RES_getUserInfo>('/user/getUserInfo');
+const getUserInfo = () => http.get<RESgetUserInfo>('/user/getUserInfo');
 
-type REQ_postAny = {
-    project_id: number | string;
-    project_name: string
-}
-type RES_postAny = {
-    project_id: number | string;
-    project_name: string
-}
-const postAny = (data: REQ_postAny) => http.post<RES_postAny>('/updateList', data);
+const postAny = (data: REQpostAny) => http.post<RESpostAny>('/updateList', data);
 
 export default {
     getUserInfo,

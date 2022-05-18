@@ -9,8 +9,8 @@
         console.log(res.data.name);
     });
 
-    api.user.postAny({ project_id: 123, project_name: '哈哈哈' }).then(res => {
-        console.log(res.data.project_id);
+    api.user.postAny({ project_id: 333, project_name: 'afadsfsdf' }).then(res => {
+        console.log(res.data.project_name);
     });
 </script>
 
