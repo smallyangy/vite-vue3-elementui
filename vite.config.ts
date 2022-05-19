@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import * as path from 'path';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 // import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
 
 // https://vitejs.dev/config/
@@ -17,6 +20,14 @@ export default ({ mode }) => defineConfig({
         // 解决dev环境commonjs无法识别的问题
         // viteCommonjs(),
         vue(),
+        // 做element-plus按需引用使用
+        AutoImport({
+            resolvers: [ElementPlusResolver()],
+        }),
+        // 做element-plus按需引用使用
+        Components({
+            resolvers: [ElementPlusResolver()],
+        }),
     ],
     // build: {
     //     commonjsOptions: {

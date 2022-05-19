@@ -1,5 +1,8 @@
 <template>
     Index
+    <el-button type="primary" size="small">按钮</el-button>
+    <el-button type="primary" size="default">按钮</el-button>
+    <el-button type="primary" size="large">按钮</el-button>
 </template>
 
 <script setup lang="ts">
